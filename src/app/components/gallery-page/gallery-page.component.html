@@ -1,0 +1,40 @@
+<div class="gallery-page-content">
+    <div class="metadata-container">
+        <div class="title">
+            <i class="far fa-images"></i>
+            MyGallery
+        </div>
+        <div class="content" *ngIf="selectedImage">
+            <div class="md-item">
+                <i class="fas fa-hashtag"></i>
+                {{ selectedImage.id }}
+            </div>
+            <div class="md-item">
+                <i class="fas fa-arrows-alt-h"></i>
+                {{ selectedImage.width }}
+            </div>
+            <div class="md-item">
+                <i class="fas fa-arrows-alt-v"></i>
+                {{ selectedImage.height }}
+            </div>
+            <div class="md-item">
+                <i class="fas fa-camera"></i>
+                {{ selectedImage.author }}
+            </div>
+        </div>
+    </div>
+    <div class="gallery-container">
+        <div class="image-list">
+            <cdk-virtual-scroll-viewport itemSize="125" class="images">
+                <img *cdkVirtualFor="let img of images" [src]="img.download_url" (click)="setSelectedImage(img)" (mouseenter)="onMouseEnterImage(img)" [class]="{'selected': selectedImage.id === img.id}">
+            </cdk-virtual-scroll-viewport>
+            <cdk-virtual-scroll-viewport itemSize="150" orientation="horizontal" class="images-mobile">
+                <img *cdkVirtualFor="let img of images" [src]="img.download_url" (click)="setSelectedImage(img)" [class]="{'selected': selectedImage.id === img.id}">
+            </cdk-virtual-scroll-viewport>
+        </div>
+        <div class="selected-image" [class]="{'loading': loading}">
+            <i class="fas fa-spinner fa-5x fa-spin" *ngIf="loading"></i>
+            <img *ngIf="selectedImage" [src]="selectedImage.download_url" [class]="{'auto-width': selectedImage.width < selectedImage.height, 'auto-height': selectedImage.width >= selectedImage.height}" (load)="onMainImageLoaded()">
+        </div>
+    </div>
+</div>
